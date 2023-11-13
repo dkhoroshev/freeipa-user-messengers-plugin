@@ -1,0 +1,1 @@
+# freeipa-user-messengers-plugin
