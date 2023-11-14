@@ -1,7 +1,36 @@
-# The schema below is actually provided by 389-ds by default. It is provided
-# here for demonstration purposes only
-#
-# dn: cn=schema
-# attributeTypes: ( 2.16.840.1.113730.3.1.692 NAME 'inetUserStatus' DESC '"active", "inactive", or "deleted" status of a user' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE X-ORIGIN 'Netscape subscriber interoperability' )
-# attributeTypes: ( 2.16.840.1.113730.3.1.693 NAME 'inetUserHttpURL' DESC 'A users Web addresses' SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 X-ORIGIN 'Netscape subscriber interoperability' )
-# objectClasses: ( 2.16.840.1.113730.3.2.130 NAME 'inetUser' DESC 'Auxiliary class which must be present in an entry for delivery of subscriber services' SUP top AUXILIARY MAY ( uid $ inetUserStatus $ inetUserHTTPURL $ userPassword $ memberOf ) X-ORIGIN 'Netscape subscriber interoperability' )
+# The Private Enterprise Number of the VeCloud project registered at IANA
+# https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
+objectIdentifier VeCloud 1.3.6.1.4.1.696
+
+objectIdentifier VeCloudLDAP VeCloud:42
+
+objectIdentifier AttributeTypes VeCloudLDAP:1
+objectIdentifier ObjectClasses VeCloudLDAP:2
+
+# Attribute Types
+#-----------------
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: ( AttributeTypes:1 NAME 'messengerTelegram'
+        DESC 'Telegram Nickname without @ and http(s)://...'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+attributeTypes: ( AttributeTypes:2 NAME 'messengerTelegramID'
+        DESC 'Telegram ChatID, use in bots'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+attributeTypes: ( AttributeTypes:3 NAME 'messengerSlackID'
+        DESC 'Slack UserID, use in bots'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+-
+add: objectclasses
+objectClasses: ( ObjectClasses:1 NAME 'messengers'
+        DESC 'User use messengers'
+        SUP top AUXILIARY
+        MAY ( messengerTelegram $ messengerTelegramID $ messengerSlackID )
+        )
