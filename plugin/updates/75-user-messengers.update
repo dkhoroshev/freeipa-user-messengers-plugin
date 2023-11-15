@@ -1,4 +1,7 @@
 # Add an explicit self-service ACI to allow writing to inetuserstatus attribute
 # for the owner of the object
 dn: cn=users,cn=accounts,$SUFFIX
-add:aci:(targetattr = "inetuserstatus")(version 3.0;acl "selfservice:Users can manage their own status";allow (write) userdn = "ldap:///self";)
+add:aci:(targetattr = "messengerTelegram || messengerSlackNick")(targetfilter = "(objectclass=posixaccount)")(version 3.0;acl "permission:System: Read User Addressbook Attributes";allow (compare,read,search) userdn = "ldap:///all";)
+add:aci:(targetattr = "messengerTelegram || messengerSlackNick || messengerTelegramID || messengerSlackID")(targetfilter = "(objectclass=posixaccount)")(version 3.0;acl "permission:System: Modify Users Messengers Attributes";allow (write) groupdn = "ldap:///cn=System: Modify Users,cn=permissions,cn=pbac,dc=sfbtech,dc=org";)
+add:aci:(targetattr = "messengerTelegram || messengerSlackNick || messengerTelegramID || messengerSlackID")(targetfilter = "(objectclass=posixaccount)")(version 3.0;acl "permission:System: Read User Messengers Attributes";allow (compare,read,search) groupdn = "ldap:///cn=System: Read User Standard Attributes,cn=permissions,cn=pbac,dc=sfbtech,dc=org";)
+add:aci:(targetattr = "messengerTelegram || messengerSlackNick")(version 3.0;acl "selfservice:Users can manage their own status";allow (write) userdn = "ldap:///self";)
