@@ -15,7 +15,7 @@ function get_item(array, attr, value) {
 var user_messenger_plugin = {};
 
 // adds 'messengerTelegram' field into user details facet
-userstatus_plugin.add_user_status_pre_op = function() {
+user_messenger_plugin.add_user_status_pre_op = function() {
 
     var facet = get_item(IPA.user.entity_spec.facets, '$type', 'details');
     var section = get_item(facet.sections, 'name', 'contact');
@@ -31,7 +31,7 @@ userstatus_plugin.add_user_status_pre_op = function() {
     return true;
 };
 
-phases.on('customization', userstatus_plugin.add_user_status_pre_op);
+phases.on('customization', user_messenger_plugin.add_user_status_pre_op);
 
-return userstatus_plugin;
+return user_messenger_plugin;
 });
